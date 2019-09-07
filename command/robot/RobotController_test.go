@@ -14,11 +14,14 @@ func TestRobotController(t *testing.T) {
 	robot := r.NewRobot(buffer)
 	controller := r.NewRobotController(buffer)
 
+	rotateRight := r.RotateCommand{Robot: robot, LeftRotation: -15}
+	controller.Commands.Enqueue(rotateRight)
+
 	move := r.MoveCommand{Robot: robot, ForwardDistance: 1000}
 	controller.Commands.Enqueue(move)
 
-	rotate := r.RotateCommand{Robot: robot, LeftRotation: 45}
-	controller.Commands.Enqueue(rotate)
+	rotateLeft := r.RotateCommand{Robot: robot, LeftRotation: 45}
+	controller.Commands.Enqueue(rotateLeft)
 
 	scoop := r.ScoopCommand{Robot: robot, ScoopUpwards: true}
 	controller.Commands.Enqueue(scoop)
@@ -29,6 +32,7 @@ func TestRobotController(t *testing.T) {
 	got := strings.Split(buffer.String(), "\n")
 	want := []string{
 		"EXECUTING COMMANDS.",
+		"Robot rotates right 15 degrees.",
 		"Robot moves forwards 1000mm.",
 		"Robot rotates left 45 degrees.",
 		"Robot gathers soil in scoop.",
